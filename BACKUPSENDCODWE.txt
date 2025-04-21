@@ -1,0 +1,158 @@
+<?php
+session_start();
+require 'dbConnCode.php'; // Include your database connection file
+require 'vendor/autoload.php'; // Load PHPMailer
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+$error = ''; // Initialize error variable
+$verificationCodeSent = false; // Track if code was sent
+
+// Check if the role is provided in the URL
+if (isset($_GET['role'])) {
+    $role = htmlspecialchars($_GET['role']); // Sanitize the role parameter
+} else {
+    $role = 'Role not specified'; // Fallback if no role is provided
+}
+
+// Generate CSRF token if it doesn't exist
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
+// Function to generate a 6-digit verification code
+function generateVerificationCode() {
+    return sprintf('%06d', mt_rand(100000, 999999));
+}
+
+// Check if the form was submitted
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Validate the email input
+    if (isset($_POST['email'])) {
+        $email = trim($_POST['email']);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = 'Invalid email format.';
+        } else {
+            // Generate verification code
+            $verificationCode = generateVerificationCode();
+
+            // Insert email and verification code into the database
+            $stmt = $conn->prepare("INSERT INTO users (verification_code, temporaryemailholder) VALUES (?, ?)");
+            if ($stmt->execute([$verificationCode, $email])) {
+                // Store email in session
+                $_SESSION['email'] = $email;
+
+                // Send verification email
+                $mail = new PHPMailer(true);
+                try {
+                    // Server settings
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'westkiria@gmail.com'; // Replace with your email
+                    $mail->Password = 'qpktvouqahvubayd'; // Replace with your email password
+                    $mail->SMTPSecure = 'tls';
+                    $mail->Port = 587;
+
+                    // Recipients
+                    $mail->setFrom('westkiria@gmail.com', 'West Kiria');
+                    $mail->addAddress($email);
+
+                    // Content
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Your Verification Code';
+                    $mail->Body    = "Your verification code is: $verificationCode";
+
+                    $mail->send();
+                    $verificationCodeSent = true; // Mark that the code was sent
+                } catch (Exception $e) {
+                    $error = "Message could not be sent. Mailer Error: " . $mail->ErrorInfo;
+                }
+
+                // Redirect or notify that the email was sent
+                if ($verificationCodeSent) {
+                    header("Location: adminAccountcreation.php?role=" . urlencode($role));
+                    exit;
+                }
+            } else {
+                $error = "Error inserting verification code into the database.";
+            }
+        }
+    } else {
+        $error = 'Please enter an email.';
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superuser Email Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Email Verification</h2>
+    
+
+    <?php if ($error): ?>
+        <div class="error"><?php echo htmlspecialchars($error); ?></div>
+    <?php endif; ?>
+
+    <form method="POST" action="">
+        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required placeholder="Enter your email">
+
+        <button type="submit">Send Verification Code</button>
+    </form>
+</div>
+
+</body>
+</html>

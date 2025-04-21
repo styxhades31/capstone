@@ -1,0 +1,323 @@
+<?php
+session_start();
+require 'dbConnCode.php'; // Database connection file
+
+$error = ''; // To store error messages
+$success = ''; // To store success messages
+
+// Initialize the session variable for tracking attempts
+if (!isset($_SESSION['failed_attempts'])) {
+    $_SESSION['failed_attempts'] = 0;
+}
+
+// Check if the role is provided in the URL and sanitize it
+if (isset($_GET['role'])) {
+    $role = htmlspecialchars($_GET['role']); // Sanitize the role parameter
+} else {
+    $error = 'Role not specified'; // Set error if no role is provided
+}
+
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Retrieve and sanitize inputs
+    $password = trim($_POST['password']);
+    $confirmPassword = trim($_POST['confirmPassword']);
+    $verificationCode = trim($_POST['verificationCode']);
+
+    // Check if email exists in the session (from previous page)
+    if (!isset($_SESSION['email'])) {
+        $error = 'No email found in session. Please restart the process.';
+    } else {
+        $email = $_SESSION['email'];
+
+        // Validate email format
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = 'Invalid email format. Please try again.';
+        }
+
+        // Check if the user has exceeded 5 failed attempts
+        if ($_SESSION['failed_attempts'] >= 5) {
+            // Display message before redirecting
+            echo 'Too many attempts. Please try again later.';
+            sleep(3); // Pause for 3 seconds to display the message
+
+            // Delete the user row from the database
+            $deleteStmt = $conn->prepare("DELETE FROM users WHERE temporaryemailholder = ?");
+            $deleteStmt->bind_param("s", $email);
+            if ($deleteStmt->execute()) {
+                // Redirect to the signup page after deleting the user
+                header("Location: superUsersignup.php");
+                exit();
+            } else {
+                $error = 'Error deleting user after exceeding attempts. Please try again.';
+            }
+        } else {
+            // Password validation (at least 6 characters, with specific requirements)
+            if ($password !== $confirmPassword) {
+                $error = 'Passwords do not match.';
+            } elseif (strlen($password) < 6) {
+                $error = 'Password must be at least 6 characters long.';
+            } elseif (!preg_match('/[A-Z]/', $password)) {
+                $error = 'Password must contain at least one uppercase letter.';
+            } elseif (!preg_match('/[a-z]/', $password)) {
+                $error = 'Password must contain at least one lowercase letter.';
+            } elseif (!preg_match('/[0-9]/', $password)) {
+                $error = 'Password must contain at least one number.';
+            } elseif (!preg_match('/[\W]/', $password)) {
+                $error = 'Password must contain at least one special character.';
+            } else {
+                // Check if the verification code matches the one in the database
+                $stmt = $conn->prepare("SELECT verification_code FROM users WHERE temporaryemailholder = ?");
+                $stmt->bind_param("s", $email); // Bind the email parameter
+                $stmt->execute();
+                $result = $stmt->get_result(); // Get the result set
+
+                if ($result && $result->num_rows > 0) {
+                    $row = $result->fetch_assoc(); // Fetch the row
+                    if ($row['verification_code'] === $verificationCode) {
+                        // Reset failed attempts on success
+                        $_SESSION['failed_attempts'] = 0;
+
+                        // Hash the password
+                        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+                        // Update the user record and set the password, email, and verification_code to NULL
+                        $updateStmt = $conn->prepare("UPDATE users SET password = ?, email = ?, verification_code = NULL, temporaryemailholder = NULL WHERE temporaryemailholder = ?");
+                        $updateStmt->bind_param("sss", $hashedPassword, $email, $email); // Bind the password, email, and temporary email
+
+                        if ($updateStmt->execute()) {
+                            // Get the user ID using the email
+                            $userIdStmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+                            $userIdStmt->bind_param("s", $email);
+                            $userIdStmt->execute();
+                            $userIdResult = $userIdStmt->get_result();
+
+                            if ($userIdResult && $userIdResult->num_rows > 0) {
+                                $userRow = $userIdResult->fetch_assoc();
+                                $userId = $userRow['id']; // Get the user ID
+
+                                // Determine role_id based on role name
+                                $roleIdStmt = $conn->prepare("SELECT id FROM roles WHERE name = ?");
+                                $roleIdStmt->bind_param("s", $role);
+                                $roleIdStmt->execute();
+                                $roleIdResult = $roleIdStmt->get_result();
+
+                                if ($roleIdResult && $roleIdResult->num_rows > 0) {
+                                    $roleRow = $roleIdResult->fetch_assoc();
+                                    $roleId = $roleRow['id']; // Get the role ID
+
+                                    // Insert into user_roles table
+                                    $insertRoleStmt = $conn->prepare("INSERT INTO user_roles (user_id, role_id) VALUES (?, ?)");
+                                    $insertRoleStmt->bind_param("ii", $userId, $roleId); // Bind user ID and role ID
+                                    if ($insertRoleStmt->execute()) {
+                                        $success = 'Account created successfully. You can now log in.';
+                                        unset($_SESSION['email']); // Optionally unset session
+                                    } else {
+                                        $error = 'Error assigning role. Please try again.';
+                                    }
+                                } else {
+                                    $error = 'Invalid role specified.';
+                                }
+                            } else {
+                                $error = 'Error retrieving user ID. Please try again.';
+                            }
+                        } else {
+                            $error = 'Error creating account. Please try again.';
+                        }
+                    } else {
+                        // Increment failed attempts on wrong verification code
+                        $_SESSION['failed_attempts'] += 1;
+                        $error = 'Invalid verification code. Attempt ' . $_SESSION['failed_attempts'] . ' of 5.';
+                    }
+                } else {
+                    $error = 'Invalid email or verification code.';
+                }
+            }
+        }
+    }
+}
+?>
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Account Creation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+        .password-rules {
+            font-size: 12px;
+            color: #555;
+            text-align: left;
+            margin-bottom: 10px;
+        }
+        .password-rules li {
+            list-style: none;
+            margin-bottom: 5px;
+        }
+        .valid {
+            color: green;
+        }
+        .invalid {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Create Admin Account</h2>
+
+    <!-- Display error or success messages -->
+    <?php if ($error): ?>
+        <div class="error"><?php echo htmlspecialchars($error); ?></div>
+    <?php endif; ?>
+
+    <?php if ($success): ?>
+        <div class="success"><?php echo htmlspecialchars($success); ?></div>
+    <?php endif; ?>
+
+    <!-- Form for account creation -->
+    <form method="POST" action="">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required placeholder="Enter your password">
+        
+        <!-- Password rules message -->
+        <div class="password-rules">
+            Password must be at least 6 characters long, and include:
+            <ul>
+                <li id="length" class="invalid">At least 6 characters long</li>
+                <li id="uppercase" class="invalid">At least one uppercase letter (A-Z)</li>
+                <li id="lowercase" class="invalid">At least one lowercase letter (a-z)</li>
+                <li id="number" class="invalid">At least one number (0-9)</li>
+                <li id="special" class="invalid">At least one special character (!, @, #, etc.)</li>
+            </ul>
+        </div>
+
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Re-enter your password">
+
+        <label for="verificationCode">Verification Code:</label>
+        <input type="text" id="verificationCode" name="verificationCode" required placeholder="Enter the code sent to your email">
+
+        <button type="submit">Create Account</button>
+    </form>
+</div>
+
+<script>
+    const passwordInput = document.getElementById('password');
+    const lengthRule = document.getElementById('length');
+    const uppercaseRule = document.getElementById('uppercase');
+    const lowercaseRule = document.getElementById('lowercase');
+    const numberRule = document.getElementById('number');
+    const specialRule = document.getElementById('special');
+
+    passwordInput.addEventListener('input', function() {
+        const password = passwordInput.value;
+
+        // Validate password length
+        if (password.length >= 6) {
+            lengthRule.classList.remove('invalid');
+            lengthRule.classList.add('valid');
+            lengthRule.textContent = '✓ At least 6 characters long';
+        } else {
+            lengthRule.classList.remove('valid');
+            lengthRule.classList.add('invalid');
+            lengthRule.textContent = 'X At least 6 characters long';
+        }
+
+        // Validate uppercase letter
+        if (/[A-Z]/.test(password)) {
+            uppercaseRule.classList.remove('invalid');
+            uppercaseRule.classList.add('valid');
+            uppercaseRule.textContent = '✓ At least one uppercase letter (A-Z)';
+        } else {
+            uppercaseRule.classList.remove('valid');
+            uppercaseRule.classList.add('invalid');
+            uppercaseRule.textContent = 'X At least one uppercase letter (A-Z)';
+        }
+
+        // Validate lowercase letter
+        if (/[a-z]/.test(password)) {
+            lowercaseRule.classList.remove('invalid');
+            lowercaseRule.classList.add('valid');
+            lowercaseRule.textContent = '✓ At least one lowercase letter (a-z)';
+        } else {
+            lowercaseRule.classList.remove('valid');
+            lowercaseRule.classList.add('invalid');
+            lowercaseRule.textContent = 'X At least one lowercase letter (a-z)';
+        }
+
+        // Validate number
+        if (/\d/.test(password)) {
+            numberRule.classList.remove('invalid');
+            numberRule.classList.add('valid');
+            numberRule.textContent = '✓ At least one number (0-9)';
+        } else {
+            numberRule.classList.remove('valid');
+            numberRule.classList.add('invalid');
+            numberRule.textContent = 'X At least one number (0-9)';
+        }
+
+        // Validate special character
+        if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+            specialRule.classList.remove('invalid');
+            specialRule.classList.add('valid');
+            specialRule.textContent = '✓ At least one special character (!, @, #, etc.)';
+        } else {
+            specialRule.classList.remove('valid');
+            specialRule.classList.add('invalid');
+            specialRule.textContent = 'X At least one special character (!, @, #, etc.)';
+        }
+    });
+</script>
+
+</body>
+</html>
+

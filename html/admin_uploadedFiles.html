@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Admin-Uploaded Files</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/styles.css">
+
+
+    <link rel="stylesheet" type="text/css" href="./css/table.css">
+    <link rel="icon" type="image/x-icon" href="./img/reoclogo1.jpg">
+    
+
+    <script defer src="./js/table.js"></script>
+</head>
+
+<!--===============================================================================================-->
+<body>
+	
+    <header>
+ 
+
+        <a href="#" class="brand">
+          <img src="img/logos.png" class="logo"> 
+        <span class="reoc">  Research Ethics Oversite Committee Portal</span>
+      </a>
+          
+          <div class="menu-btn"> 
+              <div class="navigation">
+                  <div class="navigation-items">
+                      <a href="#">Home</a>
+                      <a href="#">Application Forms</a>
+                      <a href="#">Account Verifications</a>
+                      <a href="#">Analytics</a>
+                      <a href="#">Account</a>
+                    
+                  </div>
+              </div>
+          </div>
+      </header>
+
+
+
+    <div class="tablee"> 
+      <h1 class="vision2">Upload Files</h1>
+
+      <p></p>
+      
+      
+      <div class="table-filters">
+          <label for="filter-country">Name:</label>
+          <input type="text" class="input-text" data-filter-col="0,1" id="filter-name">
+    
+      </div>
+       
+  
+      
+      <style>
+        /* Table styles */
+        table {
+            border-collapse: collapse;
+            margin: 1em auto;
+            width: 50%;
+            margin-bottom: 100px;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+        }
+        .close-btn {
+            display: block;
+            text-align: right;
+            cursor: pointer;
+            font-size: 20px;
+            margin-top: -10px;
+            margin-right: -10px;
+        }
+
+
+        .modal-button{
+           
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .table-filters{
+            position: relative;
+           margin-left: 470px;
+            unicode-bidi: isolate;
+        
+        }
+
+        .upload-btn {
+            position: relative;
+            left: 480px;
+            padding: 10px 20px;
+            background-color:  #990101;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+        
+    </style>
+</head>
+<body>
+
+  
+  
+    
+    
+    <table id="filesTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>File Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+            <tr>
+                <td>1</td>
+                <td>Study Protocol Assessment Form</td>
+             <td><button>Download</button></td>
+            </tr>
+
+
+            <tr>
+                <td>2</td>
+                <td>Informed Consent Assessment Form</td>
+             <td><button>Download</button></td>
+            </tr>
+
+
+            <tr>
+                <td>3</td>
+                <td>Exempt Review Assessment Form</td>
+             <td><button>Download</button></td>
+            </tr>
+
+
+
+        </tbody>
+    </table>
+    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Upload Files</button>
+    <input type="file" id="fileInput" multiple onchange="displayFiles(event)">
+    <script>
+        let fileIndex = 1; // Track the file index across multiple uploads
+    
+        function displayFiles(event) {
+            const files = event.target.files;
+            const tableBody = document.querySelector('#filesTable tbody');
+    
+            Array.from(files).forEach((file) => {
+                const fileSizeKB = (file.size / 1024).toFixed(2); // Convert file size to KB
+                const fileURL = URL.createObjectURL(file); // Create a temporary URL for the file
+    
+                const row = `
+                    <tr>
+                        <td>${fileIndex}</td>
+                        <td><a href="${fileURL}" download="${file.name}">${file.name}</a></td>
+                        <td>${fileSizeKB}</td>
+                    </tr>
+                `;
+                tableBody.insertAdjacentHTML('beforeend', row);
+                fileIndex++; // Increment the index for each new file
+            });
+        }
+    </script>
+
+
+	<footer class="footer">
+		<div class="owl-carousel">
+	  
+		  <a href="#" class="gallery__photo">
+			<img src="img/wmsu55.jpg" alt="" />
+		 
+		  </a>
+		  <a href="#" class="gallery__photo">
+			<img src="img/wmsu11.jpg" alt="" />
+		  
+		  </a>
+		  <a href="#" class="gallery__photo">
+			<img src="img/reoc11.jpg" alt="" />
+		   
+		  </a>
+		  <a href="#" class="gallery__photo">
+			<img src="img/wmsu22.jpg" alt="" />
+		  
+		  </a>
+		  <a href="#" class="gallery__photo">
+			<img src="img/reoc22.jpg" alt="" />
+		   
+		  </a>
+		  <a href="#" class="gallery__photo">
+			<img src="img/wmsu44.jpg" alt="" />
+		   
+		  </a>
+	  
+		</div>
+		<div class="footer__redes">
+		  <ul class="footer__redes-wrapper">
+			<li>
+			  <a href="#" class="footer__link">
+				<i class=""></i>
+				Normal Road, Baliwasan, Z.C.
+			  </a>
+			</li>
+			<li>
+			  <a href="#" class="footer__link">
+				<i class=""></i>
+				09112464566
+			  </a>
+			</li>
+			<li>
+			  <a href="#" class="footer__link">
+				<i class=""></i>
+				wmsureoc@gmail.com
+			  </a>
+			</li>
+			<li>
+			  <a href="#" class="footer__link">
+				<i class="fab fa-phone-alt"></i>
+				
+			  </a>
+			</li>
+		  </ul>
+		</div>
+		<div class="separador"></div>
+		<p class="footer__texto">RESEARCH ETHICS OVERSITE COMMITTEE - WMSU</p>
+	  </footer>
+	
+
+	  
+   
+  
+  
+  
+  <!-- partial -->
+
+  
+	<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
+	<script src='https://unpkg.com/feather-icons'></script>
+	
+	  <script src="./js/footer.js"></script>
+	  
+	
+
+	<script src="./js/fonts.js"></script>
+  
+  
+
+</body>
+</html>

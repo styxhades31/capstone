@@ -1,0 +1,126 @@
+
+
+
+/* random additional styles for a more real-world situation */
+td.name {
+	font-weight: bold;
+}
+td.email {
+	color: #666;
+	text-decoration: underline;
+}
+
+/* form styles */
+input, select {
+	font: inherit;
+	margin: 0;
+	padding: 4px;
+	border: 1px solid #bbb;
+}
+.input-text {
+	min-width: 150px;
+	background-color: #fff;
+}
+select {
+	min-width: 150px;
+}
+label {
+	margin-right: 4px;
+}
+
+
+
+/* Filtable styles */
+tr.hidden {
+	display: none;
+}
+tr:nth-child(odd) > td {
+	background-color: #ffffff;
+}
+tr:nth-child(even) > td {
+	background-color: #f4f4f2;
+}
+tr.odd > td {
+	background-color: #ffffff;
+}
+tr.even > td {
+	background-color: #f4f4f2;
+}
+
+
+/* Large table example */
+.large-table {
+	width: 100%;
+}
+.large-table td {
+	font-size: 12px;
+}
+.console {
+	font-family: ui-monospace, monospace;
+}
+
+
+.table-filters{
+    position: relative;
+   margin-left: 255px;
+    unicode-bidi: isolate;
+
+}
+
+.table-filters label{
+   margin-left: 35px;
+
+}
+
+
+.table-filters1{
+    position: relative;
+   margin-left: 95px;
+    unicode-bidi: isolate;
+
+}
+
+.table-filters1 label{
+   margin-left: 35px;
+
+}
+
+/* Modal checkbox trick */
+input[type="checkbox"] {
+    display: none;
+}
+
+input[type="checkbox"]:checked ~ .modal {
+    display: flex;
+}
+
+
+
+
+
+button{
+    cursor: pointer;
+}
+
+
+
+.tablee{
+    position: relative;
+    top: 50px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

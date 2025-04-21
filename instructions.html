@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+    <script src="//cdn.jsdelivr.net/gh/freeps2/a7rarpress@main/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/swiper.css">
+    <link rel="icon" type="image/x-icon" href="./img/reoclogo1.jpg">
+</head>
+
+<!--===============================================================================================-->
+<body>
+<style>
+  
+  body {
+    background: none; /* Remove the direct background image */
+    position: relative; /* Ensure the pseudo-element is positioned correctly */
+  }
+  
+  body::before {
+    content: '';
+    position: fixed; /* Cover the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('img/REOCBG2.jpg') no-repeat center center;
+    background-size: contain; /* Ensures the image covers the entire viewport */
+    opacity: 0.5; /* Lower the opacity of the background image */
+    z-index: -1; /* Place it behind other elements */
+  }
+  
+  .logout-button {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 20px; /* Space between navbar and logout button */
+}
+.logout-button:hover {
+    background-color: #c82333;
+}
+
+
+.section1{
+  background-color: rgba(250, 235, 215, 0);
+}
+
+footer{
+  background-color: #F8F7F4;
+}
+
+.vision {
+  background-color: #f8f7f400;
+  position: relative;
+  padding-top: 100px;
+  text-align: center;
+}
+</style>
+  <header>
+    <a href="#" class="brand">
+      <img src="img/logos.png" class="logo">
+      <span class="reoc">Research Ethics Oversite Committee Portal</span>
+    </a>
+  
+    <div class="menu-btn">
+      <div class="navigation">
+        <div class="navigation-items">
+          <a href="researcherHome.php">Home</a>
+          <div class="dropdown1">
+            <a href="#">Applications</a>
+            <div class="dropdown-content1">
+              <div class="file-item1">
+                <a href="SubmitFiles.php">Submit Application</a>
+              </div>
+              <div class="file-item1">
+                <a href="viewApplications.php">View Applications</a>
+              </div>
+            </div>
+          </div>
+  
+          <div class="dropdown">
+            <a href="#">Downloadables</a>
+            <div class="dropdown-content">
+              <div class="file-item">
+                <span><strong>Application Form (WMSU-REOC-FR-001)</strong></span>
+                <a href="./files/2-FR.002-Application-Form.doc" download>Download</a>
+              </div>
+              <div class="file-item">
+                <span><strong>Study Protocol Assessment Form (WMSU-REOC-FR-004)</strong></span>
+                <a href="./files/4-FR.004-Study-Protocol-Assessment-Form-Copy.docx" download>Download</a>
+              </div>
+              <div class="file-item">
+                <span><strong>Informed Consent Assessment Form (WMSU-REOC-FR-005)</strong></span>
+                <a href="./files/5-FR.005-Informed-Consent-Assessment-Form (1).docx" download>Download</a>
+              </div>
+              <div class="file-item">
+                <span><strong>Exempt Review Assessment Form (WMSU-REOC-FR-006)</strong></span>
+                <a href="./files/6-FR.006-EXEMPT-REVIEW-ASSESSMENT-FORM (1).docx" download>Download</a>
+              </div>
+            </div>
+          </div>
+  
+          <a href="./instructions.html">Instructions</a>
+        
+  
+          <!-- Logout Button -->
+          <form method="POST" action="researcherHome.php" style="display: inline;">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+            <button type="submit" name="logout" class="logout-button">Logout</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>
+    
+  </div>
+  
+
+ <h1 class="vision"> REOC Application Instructions</h1>
+ <div class="section1">
+
+
+    <div class="slide-container1 ">
+        <div class="slide-content">
+            <div class="card-wrapper swiper-wrapper">
+
+
+
+                <div class="card1 swiper-slide">
+                    <div class="image-content">
+                        <span class="overlay"> <h2 class="name2">Instructions</h2></span>
+                    </div>
+
+                    <div class="card-content1">
+                      <br>
+                        <p class="description">1. Download copies of the Application Form and the applicable Assessment Forms in the Downloadables tab.</p>
+                        <br>
+                      <br>
+                      2.Comply relevant documents for Research Ethics Review with responding file type:
+                      <br>
+                      <br>
+                     • Application Form for Research Ethics Review - WMSU-REOC-FR-001 (with researcher/s signature in pdf file)
+                       <br>
+                     • Research Protocol/Proposal(with page and line number in pdf file)
+                      <br>
+                      • Technical Review Clearance -(pdf file)
+                      <br>
+                      • Data collection instrument/s (with page and line number in pdf file)
+                      <br>
+                      • Informed Consent/Assent (with page and line number in pdf file)
+                      <br>
+                      • Curriculum Vitae of Researcher/s (pdf file)
+                      <br>
+                      • Completed Study Protocol Assessment Form - WMSU-REOC-FR-004 (fill up the required details with asterisks in word file)
+                      <br>
+                      •  Completed Informed Consent Assessment Form - WMSU-REOC-FR-005 (fill up the required details with asterisks in word file)
+                      <br>
+                      • Completed Exempt Review Assessment Form - WMSU-REOC-FR-006 (fill up the required details with asterisks in word file)
+                      Other documents (NCIP Clearance, MOA, MOU, etc. in pdf file)
+                      <br>
+                      <br>
+                      3. Upon accomplishment of google form wait for further notification from WMSU REOC thru your GMAIL for the Research Ethics Review documents hardcopies submission appointment date.
+                      <br>
+                      <br>
+                      4. On the hardcopies submission appointment date, documents must be placed in a long expanded envelope following the color coding (see College/Institution Section) with printed seal.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+
+            
+
+                
+            </div>
+        </div>
+
+    </div>
+    
+   
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+</div>
+
+  
+
+  
+    </div>
+
+  </body>
+
+
+
+
+
+
+
+
+
+
+
+
+    <footer class="footer">
+      <div class="owl-carousel">
+    
+        <a href="#" class="gallery__photo">
+          <img src="img/wmsu55.jpg" alt="" />
+       
+        </a>
+        <a href="#" class="gallery__photo">
+          <img src="img/wmsu11.jpg" alt="" />
+        
+        </a>
+        <a href="#" class="gallery__photo">
+          <img src="img/reoc11.jpg" alt="" />
+         
+        </a>
+        <a href="#" class="gallery__photo">
+          <img src="img/wmsu22.jpg" alt="" />
+        
+        </a>
+        <a href="#" class="gallery__photo">
+          <img src="img/reoc22.jpg" alt="" />
+         
+        </a>
+        <a href="#" class="gallery__photo">
+          <img src="img/wmsu44.jpg" alt="" />
+         
+        </a>
+    
+      </div>
+      <div class="footer__redes">
+        <ul class="footer__redes-wrapper">
+          <li>
+            <a href="#" class="footer__link">
+              <i class=""></i>
+              Normal Road, Baliwasan, Z.C.
+            </a>
+          </li>
+          <li>
+            <a href="#" class="footer__link">
+              <i class=""></i>
+              09112464566
+            </a>
+          </li>
+          <li>
+            <a href="#" class="footer__link">
+              <i class=""></i>
+              wmsureoc@gmail.com
+            </a>
+          </li>
+          <li>
+            <a href="#" class="footer__link">
+              <i class="fab fa-phone-alt"></i>
+              
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="separador"></div>
+      <p class="footer__texto">RESEARCH ETHICS OVERSITE COMMITTEE - WMSU</p>
+    </footer>
+    <!-- partial -->
+      <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
+    <script src='https://unpkg.com/feather-icons'></script><script  src="footer.js"></script>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+
+    <script src="./js/main.js"></script>
+    <script src="./js/swiper.js"></script>
+    <script src="./js/footer.js"></script>
+    <script src="./js/faq.js"></script>
+
+</html>

@@ -1,0 +1,118 @@
+<?php
+session_start();
+
+// Include database connection
+require_once 'dbConnCode.php';  // This file contains the $conn variable for mysqli
+
+// Check if the user is logged in and is a researcher
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Researcher') {
+    header("Location: login.php");
+    exit();
+}
+
+// Handle file uploads
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $upload_dir = 'uploads/';  // Directory where files will be saved
+    $user_id = $_SESSION['user_id'];  // Get the current user's ID
+    $files = ['application_form', 'research_protocol', 'technical_review', 'data_instruments', 'informed_consent', 'cv', 'study_protocol_form', 'informed_consent_form', 'exempt_review_form'];
+
+    foreach ($files as $file) {
+        if (!empty($_FILES[$file]['name'])) {
+            $file_name = basename($_FILES[$file]['name']);
+            $file_path = $upload_dir . $file_name;
+
+            if (move_uploaded_file($_FILES[$file]['tmp_name'], $file_path)) {
+                // Insert into the database using mysqli
+                $stmt = $conn->prepare("INSERT INTO researcher_files (user_id, file_type, filename, file_path) VALUES (?, ?, ?, ?)");
+                $file_type = ucfirst(str_replace('_', ' ', $file));  // Format the file type
+                $stmt->bind_param("isss", $user_id, $file_type, $file_name, $file_path);
+                $stmt->execute();
+            }
+        }
+    }
+
+    // Handle other files (additional documents)
+    if (!empty($_POST['other_file_names']) && !empty($_FILES['other_files']['name'])) {
+        foreach ($_FILES['other_files']['name'] as $key => $other_file_name) {
+            if (!empty($other_file_name)) {
+                $file_path = $upload_dir . basename($other_file_name);
+                if (move_uploaded_file($_FILES['other_files']['tmp_name'][$key], $file_path)) {
+                    $stmt = $conn->prepare("INSERT INTO researcher_files (user_id, file_type, filename, file_path) VALUES (?, 'Other', ?, ?)");
+                    $stmt->bind_param("iss", $user_id, $other_file_name, $file_path);
+                    $stmt->execute();
+                }
+            }
+        }
+    }
+}
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Research Files</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .other-documents-container {
+            display: flex;
+            align-items: center;
+        }
+        .other-documents-container input[type="file"] {
+            margin-right: 10px;
+        }
+    </style>
+    <script>
+        function addOtherFile() {
+            const container = document.getElementById('other-files-container');
+            const div = document.createElement('div');
+            div.innerHTML = '<input type="file" name="other_files[]" required>';
+            container.appendChild(div);
+        }
+    </script>
+</head>
+<body>
+    <h2>Submit Research Ethics Review Documents</h2>
+    <form method="POST" enctype="multipart/form-data">
+    <ul>
+    <li> Application Form for Research Ethics Review - WMSU-REOC-FR-001 (with researcher/s signature in pdf file)
+        <input type="file" name="application_form" accept=".pdf" required>
+    </li>
+    <li> Research Protocol/Proposal (with page and line number in pdf file)
+        <input type="file" name="research_protocol" accept=".pdf" required>
+    </li>
+    <li> Technical Review Clearance - (pdf file)
+        <input type="file" name="technical_review" accept=".pdf" required>
+    </li>
+    <li> Data collection instrument/s (with page and line number in pdf file)
+        <input type="file" name="data_instruments" accept=".pdf" required>
+    </li>
+    <li> Informed Consent/Assent (with page and line number in pdf file)
+        <input type="file" name="informed_consent" accept=".pdf" required>
+    </li>
+    <li> Curriculum Vitae of Researcher/s (pdf file)
+        <input type="file" name="cv" accept=".pdf" required>
+    </li>
+    <li> Completed Study Protocol Assessment Form - WMSU-REOC-FR-004 (fill up the required details with asterisks in word file)
+        <input type="file" name="study_protocol_form" accept=".doc,.docx" required>
+    </li>
+    <li> Completed Informed Consent Assessment Form - WMSU-REOC-FR-005 (fill up the required details with asterisks in word file)
+        <input type="file" name="informed_consent_form" accept=".doc,.docx" required>
+    </li>
+    <li> Completed Exempt Review Assessment Form - WMSU-REOC-FR-006 (fill up the required details with asterisks in word file)
+        <input type="file" name="exempt_review_form" accept=".doc,.docx" required>
+    </li>
+    <li class="other-documents-container">Other documents (NCIP Clearance, MOA, MOU, etc. in pdf file)
+        <div id="other-files-container">
+            <input type="file" name="other_files[]" accept=".pdf">
+        </div>
+        <button type="button" onclick="addOtherFile()">Add More</button>
+    </li>
+    </ul>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

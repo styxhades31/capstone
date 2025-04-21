@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Application Form</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/styles.css">
+
+
+    <link rel="stylesheet" type="text/css" href="./css/table.css">
+    <link rel="icon" type="image/x-icon" href="./img/reoclogo1.jpg">
+    
+
+    <script defer src="./js/table.js"></script>
+</head>
+
+<!--===============================================================================================-->
+<body>
+	
+    <header>
+ 
+
+        <a href="#" class="brand">
+          <img src="img/logos.png" class="logo"> 
+        <span class="reoc">  Research Ethics Oversite Committee Portal</span>
+      </a>
+          
+          <div class="menu-btn"> 
+              <div class="navigation">
+                  <div class="navigation-items">
+                      <a href="#">Home</a>
+                      <a href="#">Application Forms</a>
+                      <a href="#">Account Verifications</a>
+                      <a href="#">Analytics</a>
+                      <a href="#">Account</a>
+                    
+                  </div>
+              </div>
+          </div>
+      </header>
+
+
+
+    <div class="tablee"> 
+      <h1 class="vision2">Application Forms</h1>
+
+      <p></p>
+      
+      
+      <div class="table-filters">
+          <label for="filter-name">Name:</label>
+          <input type="text" class="input-text" data-filter-col="0,1" id="filter-name">
+          <label for="filter-title">Study Title:</label>
+          <input type="text" class="input-text" data-filter-col="2" id="filter-title">
+    
+          <label for="filter-researchcat">Research Category:</label>
+          <select id="filter-researchcat" data-filter-col="3">
+              <option value="">- All -</option>
+              <option>Undergraduate</option>
+              <option>Master's Thesis</option>
+              <option>Dissertation</option>
+              <option>Institutionally Funded</option>
+              <option>Externally Funded</option>
+          
+          </select>
+
+          <label for="filter-payment">Payment</label>
+          <select id="filter-payment" data-filter-col="3">
+              <option value="">- All -</option>
+              <option>Paid</option>
+              <option>Pending</option>
+          </select>
+
+          <label for="filter-type">Type Of Research</label>
+          <select id="filter-type" data-filter-col="3">
+              <option value="">- All -</option>
+              <option>Initial Review</option>
+              <option>Exempt</option>
+              <option>Expedited</option>
+              <option>Full Review</option>
+          </select>
+
+      </div>
+
+
+       
+  
+      
+      <style>
+        /* Table styles */
+        table {
+            border-collapse: collapse;
+            margin: 1em auto;
+            width: 90%;
+            margin-bottom: 100px;
+        }
+        th, td {
+            background-color: rgb(139, 56, 56);
+          
+            padding: 8px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+
+        th{
+            font-size: 13px;
+            text-align: center;
+            color: white;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+        }
+        .close-btn {
+            display: block;
+            text-align: right;
+            cursor: pointer;
+            font-size: 20px;
+            margin-top: -10px;
+            margin-right: -10px;
+        }
+
+
+        .modal-button{
+           
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .restitle {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+    
+          }
+          
+          .restitle:hover {
+            overflow: visible;
+            white-space: normal;
+            max-width: none;
+            background-color: #fff;
+            z-index: 1;
+          }
+
+    </style>
+</head>
+
+
+<table>
+    <tr>
+        <th>Date Uploaded</th>
+        <th>Researcher Name</th>
+        <th>Study Protocol Title</th>
+        <th>Research Category</th>
+        <th>College/ Institution</th>
+        <th>Name of Adviser</th>
+        <th>Submitted Forms</th>
+        <th>Hardcopy Submission Schedule</th>
+        <th>Email</th>
+        <th>Contact Number</th>
+        <th>Payment</th>
+        <th>Type Of Research</th>
+        <th>Certification</th>
+    </tr>
+    <tr>
+        <td>9/11/24</td>
+        <td><button class="modal-button" data-modal="modal1">Alex Talamor</button></td>
+        <td class="restitle">The Effectiveness of Online Communication in Building Romantic Relationships</td>
+        <td>Undergraduate Research</td>
+        <td>College Of Liberal Arts</td>
+        <td>Ms. Xylene Dagalea</td>
+        <td><a href="./admin_uploadedFiles.html" target="_blank"><button>View Forms</button></a></td>
+        <td><input type="date" value="2024-09-07"></td>
+        <td>axtalamoer@gmail.com</td>
+        <td>09261934551</td>
+        <td>
+            <select>
+                <option value="Pending">Pending</option>
+                <option value="Paid">Paid</option>
+            
+               
+            </select>
+        </td>
+
+        <td>
+            <select>
+                <option value="Initial">Initial Review</option>
+                <option value="Exempt">Exempt</option>
+                <option value="Expedited">Expedited</option>
+                <option value="Full Review">Full Review</option>
+               
+            </select>
+            <td><button>Generate</button></td>
+        </td>
+    </tr>
+    <tr>
+        <td>9/13/24</td>
+        <td><button class="modal-button" data-modal="modal2">Maria Smith</button></td>
+        <td class="restitle">Exploring the Impact of Social Media on Mental Health</td>
+        <td>Master's Research</td>
+        <td>College Of Medicine</td>
+        <td>Dr. James Cook</td>
+        <td><a href="./admin_uploadedFiles.html" target="_blank"><button>View Forms</button></a></td>
+        <td><input type="date" value="2024-09-11"></td>
+        <td>asda1212@gmail.com</td>
+        <td>09261934551</td>
+
+        <td>
+            <select>
+                <option value="">Pending</option>
+                <option value="Paid">Paid</option>
+
+            </select>
+        </td>
+
+        <td>
+            <select>
+                <option value="Initial">Initial Review</option>
+                <option value="Exempt">Exempt</option>
+                <option value="Expedited">Expedited</option>
+                <option value="Full Review">Full Review</option>
+               
+            </select>
+            <td><button>Generate</button></td>
+        </td>
+    </tr>
+
+
+<tr>
+    <td>10/20/24</td>
+    <td><button class="modal-button" data-modal="modal5">Alice Lee</button></td>
+    <td class="restitle">The Impact of Social Media on Mental Health</td>
+    <td>Undergraduate Research</td>
+    <td>College Of Social Sciences</td>
+    <td>Dr. Emily Wong</td>
+    <td><a href="./admin_uploadedFiles.html" target="_blank"><button>View Forms</button></a></td>
+    <td><input type="date" value="2024-01-22"></td>
+    <td>AliceLee@gmail.com</td>
+    <td>09876543210</td>
+    <td>
+        <select>
+            <option value="Pending">Pending</option>
+            <option value="Paid">Paid</option>
+        </select>
+    </td>
+    <td>
+        <select>
+            <option value="Initial">Initial Review</option>
+            <option value="Exempt">Exempt</option>
+            <option value="Expedited">Expedited</option>
+            <option value="Full Review">Full Review</option>
+        </select>
+    </td>
+    <td><button>Generate</button></td>
+</tr>
+
+<tr>
+    <td>11/05/24</td>
+    <td><button class="modal-button" data-modal="modal6">Michael Brown</button></td>
+    <td class="restitle">Exploring Quantum Computing and Cryptography</td>
+    <td>Internally Funded</td>
+    <td>College Of Computer Science</td>
+    <td>Dr. Sarah Johnson</td>
+    <td><a href="./admin_uploadedFiles.html" target="_blank"><button>View Forms</button></a></td>
+    <td><input type="date" value="2024-04-15"></td>
+    <td>MichaelBrownQC@gmail.com</td>
+    <td>09129876543</td>
+    <td>
+        <select>
+            <option value="Pending">Pending</option>
+            <option value="Paid">Paid</option>
+        </select>
+    </td>
+    <td>
+        <select>
+            <option value="Initial">Initial Review</option>
+            <option value="Exempt">Exempt</option>
+            <option value="Expedited">Expedited</option>
+            <option value="Full Review">Full Review</option>
+        </select>
+    </td>
+    <td><button>Generate</button></td>
+</tr>
+
+<tr>
+    <td>12/10/24</td>
+    <td><button class="modal-button" data-modal="modal7">Sophia Green</button></td>
+    <td class="restitle">Evaluating Environmental Policies in Coastal Areas</td>
+    <td>Externally Funded</td>
+    <td>College Of Environmental Studies</td>
+    <td>Dr. David White</td>
+    <td><a href="./admin_uploadedFiles.html" target="_blank"><button>View Forms</button></a></td>
+    <td><input type="date" value="2024-05-30"></td>
+    <td>SophiaGreenEnviro@gmail.com</td>
+    <td>09101122334</td>
+    <td>
+        <select>
+            <option value="Pending">Pending</option>
+            <option value="Paid">Paid</option>
+        </select>
+    </td>
+    <td>
+        <select>
+            <option value="Initial">Initial Review</option>
+            <option value="Exempt">Exempt</option>
+            <option value="Expedited">Expedited</option>
+            <option value="Full Review">Full Review</option>
+        </select>
+    </td>
+    <td><button>Generate</button></td>
+</tr>
+
+
+<tr>
+    <td>12/25/24</td>
+    <td><button class="modal-button" data-modal="modal8">Carlos Rivera</button></td>
+    <td class="restitle">Blockchain Applications in Financial Services</td>
+    <td>Institutionally Funded</td>
+    <td>College Of Business</td>
+    <td>Dr. Linda Martinez</td>
+    <td><a href="./admin_uploadedFiles.html" target="_blank"><button>View Forms</button></a></td>
+    <td><input type="date" value="2024-06-10"></td>
+    <td>CarlosRiveraFS@gmail.com</td>
+    <td>09223344556</td>
+    <td>
+        <select>
+            <option value="Pending">Pending</option>
+            <option value="Paid">Paid</option>
+        </select>
+    </td>
+    <td>
+        <select>
+            <option value="Initial">Initial Review</option>
+            <option value="Exempt">Exempt</option>
+            <option value="Expedited">Expedited</option>
+            <option value="Full Review">Full Review</option>
+        </select>
+    </td>
+    <td><button>Generate</button></td>
+</tr>
+
+<tr>
+    <td>01/15/25</td>
+    <td><button class="modal-button" data-modal="modal9">Emily Carter</button></td>
+    <td class="restitle">Advances in Biotechnology for Agriculture</td>
+    <td>Undergraduate Research</td>
+    <td>College Of Agriculture</td>
+    <td>Dr. Henry Powell</td>
+    <td><a href="./admin_uploadedFiles.html" target="_blank"><button>View Forms</button></a></td>
+    <td><input type="date" value="2024-07-22"></td>
+    <td>EmilyCarterBio@gmail.com</td>
+    <td>09187766554</td>
+    <td>
+        <select>
+            <option value="Pending">Pending</option>
+            <option value="Paid">Paid</option>
+        </select>
+    </td>
+    <td>
+        <select>
+            <option value="Initial">Initial Review</option>
+            <option value="Exempt">Exempt</option>
+            <option value="Expedited">Expedited</option>
+            <option value="Full Review">Full Review</option>
+        </select>
+    </td>
+    <td><button>Generate</button></td>
+</tr>
+
+<tr>
+    <td>02/05/25</td>
+    <td><button class="modal-button" data-modal="modal10">Liam Nguyen</button></td>
+    <td class="restitle">Climate Change Impact on Coastal Cities</td>
+    <td>Undergraduate Research</td>
+    <td>College Of Environmental Studies</td>
+    <td>Dr. Anna Taylor</td>
+    <td><a href="./admin_uploadedFiles.html" target="_blank"><button>View Forms</button></a></td>
+    <td><input type="date" value="2024-08-05"></td>
+    <td>LiamNguyenClimate@gmail.com</td>
+    <td>09345566778</td>
+    <td>
+        <select>
+            <option value="Pending">Pending</option>
+            <option value="Paid">Paid</option>
+        </select>
+    </td>
+    <td>
+        <select>
+            <option value="Initial">Initial Review</option>
+            <option value="Exempt">Exempt</option>
+            <option value="Expedited">Expedited</option>
+            <option value="Full Review">Full Review</option>
+        </select>
+    </td>
+    <td><button>Generate</button></td>
+</tr>
+
+<tr>
+    <td>02/20/25</td>
+    <td><button class="modal-button" data-modal="modal11">Sarah O’Connor</button></td>
+    <td class="restitle">Nanotechnology in Modern Medicine</td>
+    <td>Institutionally Funded</td>
+    <td>College Of Engineering</td>
+    <td>Dr. Thomas Blake</td>
+    <td><a href="./admin_uploadedFiles.html" target="_blank"><button>View Forms</button></a></td>
+    <td><input type="date" value="2024-09-12"></td>
+    <td>SarahOConnorNano@gmail.com</td>
+    <td>09216668899</td>
+    <td>
+        <select>
+            <option value="Pending">Pending</option>
+            <option value="Paid">Paid</option>
+        </select>
+    </td>
+    <td>
+        <select>
+            <option value="Initial">Initial Review</option>
+            <option value="Exempt">Exempt</option>
+            <option value="Expedited">Expedited</option>
+            <option value="Full Review">Full Review</option>
+        </select>
+    </td>
+    <td><button>Generate</button></td>
+</tr>
+
+<tr>
+    <td>03/10/25</td>
+    <td><button class="modal-button" data-modal="modal12">Oliver Zhang</button></td>
+    <td class="restitle">Cybersecurity Threats in the IoT Era</td>
+    <td>Master's Research</td>
+    <td>College Of Computer Science</td>
+    <td>Dr. Julia Harris</td>
+    <td><a href="./admin_uploadedFiles.html" target="_blank"><button>View Forms</button></a></td>
+    <td><input type="date" value="2024-10-01"></td>
+    <td>OliverZhangCyber@gmail.com</td>
+    <td>09123334455</td>
+    <td>
+        <select>
+            <option value="Pending">Pending</option>
+            <option value="Paid">Paid</option>
+        </select>
+    </td>
+    <td>
+        <select>
+            <option value="Initial">Initial Review</option>
+            <option value="Exempt">Exempt</option>
+            <option value="Expedited">Expedited</option>
+            <option value="Full Review">Full Review</option>
+        </select>
+    </td>
+    <td><button>Generate</button></td>
+</tr>
+
+
+
+
+
+
+
+    <tr>
+        <td>9/15/24</td>
+        <td><button class="modal-button" data-modal="modal3">John Doe</button></td>
+        <td class="restitle">A Study on Renewable Energy Adoption in Urban Areas</td>
+        <td>Institutionally Funded</td>
+        <td>College Of Physical Education</td>
+        <td>Dr. Anne Brown</td>
+        <td><a href="./admin_uploadedFiles.html" target="_blank"><button>View Forms</button></a></td>
+        <td><input type="date" value="2024-02-14"></td>
+        <td>JohnDoe1212@gmail.com</td>
+        <td>09261976284</td>
+
+        <td>
+            <select>
+                <option value="Pending">Pending</option>
+                <option value="Paid">Paid</option>
+              
+            </select>
+        </td>
+
+        <td>
+            <select>
+                <option value="Initial">Initial Review</option>
+                <option value="Exempt">Exempt</option>
+                <option value="Expedited">Expedited</option>
+                <option value="Full Review">Full Review</option>
+               
+            </select>
+        </td>
+        <td><button>Generate</button></td>
+    </tr>
+    <tr>
+
+
+</table>
+
+<!-- Modals for each researcher -->
+<div class="modal" id="modal1">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Co-Researchers</h2>
+        <p>Alex Talamor</p>
+        <p>Taylor Perez</p>
+        <p>Bruno Roses</p>
+    </div>
+</div>
+
+<div class="modal" id="modal2">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Co-Researchers</h2>
+        <p>Kristine Dela Cruz</p>
+        <p>Jacob Rivero-Reyes</p>
+        <p>Lasie Sureoy</p>
+        <p>Carlos Michael Murdock</p>
+    </div>
+</div>
+
+<div class="modal" id="modal3">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Co-Researchers</h2>
+        <p>Roy Anton Pula</p>
+        <p>Angelica Uy</p>
+        </div>
+  
+</div>
+
+<div class="modal" id="modal4">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Co-Researchers</h2>
+        <p>Alvin John Ponta</p>
+        <p>Arnel Sedigo</p>
+        <p>Angel Kim Isabela</p>
+     
+    </div>
+</div>
+
+<div class="modal" id="modal5">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Co-Researchers</h2>
+        <p>Kristine Dela Cruz</p>
+        <p>Jacob Rivero-Reyes</p>
+        <p>Lasie Sureoy</p>
+        <p>Carlos Michael Murdock</p>
+    </div>
+</div>
+
+<div class="modal" id="modal6">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Co-Researchers</h2>
+        <p>Leah Mae Patroza</p>
+        <p>Arlyn Cruz</p>
+        
+    </div>
+</div>
+
+<div class="modal" id="modal7">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Co-Researchers</h2>
+        <p>Stephanie Arduino</p>
+        <p>Clarence Anthony Mae</p>
+        <p>Leo Kim</p>
+       
+    </div>
+</div>
+
+<div class="modal" id="modal8">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Co-Researchers</h2>
+        <p>Kolley Menendez</p>
+        <p>John Cena</p>
+        <p>Loriverse Ampo</p>
+        <p>Denise Mae Raton</p>
+    </div>
+</div>
+
+<div class="modal" id="modal9">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Co-Researchers</h2>
+        <p>Jepoy Dizon</p>
+        <p>Louis Dominguez</p>
+       
+    </div>
+</div>
+
+<div class="modal" id="modal10">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Co-Researchers</h2>
+        <p>Lasie Sureoy</p>
+    
+    </div>
+</div>
+
+<div class="modal" id="modal11">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Co-Researchers</h2>
+        <p>Cheryl Cruz</p>
+        <p>Taylorson Kipay</p>
+    </div>
+</div>
+
+<div class="modal" id="modal12">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Co-Researchers</h2>
+        <p>Adrian Dimakanton</p>
+        <p>Justine West</p>
+       
+    </div>
+</div>
+
+<div class="modal" id="modal13">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Co-Researchers</h2>
+        <p> Claire Dela Cruz</p>
+        <p>Jacob Rivero-Reyes</p>
+        <p>Lasie Sureoy</p>
+        <p>Carlos Michael Murdock</p>
+    </div>
+</div>
+
+<div class="modal" id="modal14">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Co-Researchers</h2>
+        <p>Reynalyn Dua</p>
+       
+    </div>
+</div>
+
+<div class="modal" id="modal15">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Co-Researchers</h2>
+        <p>Justine Bieber</p>
+        <p>Okay na yan</p>
+  
+    </div>
+</div>
+</div>
+
+<script>
+    // Get all modal buttons and modals
+    const modalButtons = document.querySelectorAll('.modal-button');
+    const modals = document.querySelectorAll('.modal');
+    const closeButtons = document.querySelectorAll('.close-btn');
+
+    // Function to open modals
+    modalButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const modalId = button.getAttribute('data-modal');
+            document.getElementById(modalId).style.display = 'flex';
+        });
+    });
+
+    // Function to close modals
+    closeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            button.closest('.modal').style.display = 'none';
+        });
+    });
+
+    // Close modals when clicking outside the modal content
+    modals.forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+
+
+	<footer class="footer">
+		<div class="owl-carousel">
+	  
+		  <a href="#" class="gallery__photo">
+			<img src="img/wmsu55.jpg" alt="" />
+		 
+		  </a>
+		  <a href="#" class="gallery__photo">
+			<img src="img/wmsu11.jpg" alt="" />
+		  
+		  </a>
+		  <a href="#" class="gallery__photo">
+			<img src="img/reoc11.jpg" alt="" />
+		   
+		  </a>
+		  <a href="#" class="gallery__photo">
+			<img src="img/wmsu22.jpg" alt="" />
+		  
+		  </a>
+		  <a href="#" class="gallery__photo">
+			<img src="img/reoc22.jpg" alt="" />
+		   
+		  </a>
+		  <a href="#" class="gallery__photo">
+			<img src="img/wmsu44.jpg" alt="" />
+		   
+		  </a>
+	  
+		</div>
+		<div class="footer__redes">
+		  <ul class="footer__redes-wrapper">
+			<li>
+			  <a href="#" class="footer__link">
+				<i class=""></i>
+				Normal Road, Baliwasan, Z.C.
+			  </a>
+			</li>
+			<li>
+			  <a href="#" class="footer__link">
+				<i class=""></i>
+				09112464566
+			  </a>
+			</li>
+			<li>
+			  <a href="#" class="footer__link">
+				<i class=""></i>
+				wmsureoc@gmail.com
+			  </a>
+			</li>
+			<li>
+			  <a href="#" class="footer__link">
+				<i class="fab fa-phone-alt"></i>
+				
+			  </a>
+			</li>
+		  </ul>
+		</div>
+		<div class="separador"></div>
+		<p class="footer__texto">RESEARCH ETHICS OVERSITE COMMITTEE - WMSU</p>
+	  </footer>
+	
+
+	  
+   
+  
+  
+  
+  <!-- partial -->
+
+  
+	<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
+	<script src='https://unpkg.com/feather-icons'></script>
+	  <script src="./js/main.js"></script>
+	  <script src="./js/swiper.js"></script>
+	  <script src="./js/footer.js"></script>
+	  <script src="./js/faq.js"></script>
+	
+
+	<script src="./js/fonts.js"></script>
+  
+  
+
+</body>
+</html>
